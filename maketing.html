@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบทดสอบวิชาการตลาด</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* เปลี่ยนเป็น flex-start เพื่อให้เนื้อหาขึ้นเริ่มต้นที่ด้านบน */
+      min-height: 110vh; /* ใช้ min-height แทน height */
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: antiquewhite;
+      background-image: url(''); 
+      background-size: cover; 
+      background-position: center;
+      overflow-y: auto; /* เพิ่มการเลื่อนขึ้นลง */
+    }
+
+    .quiz-container {
+      text-align: center;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px; /* Add space between buttons */
+      margin-top: 20px;
+    }
+    .submit-button, .next-button {
+      background-color: rgba(168, 114, 70, 0.8);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.2em;
+    }
+    .submit-button:hover, .next-button:hover {
+      background-color: rgba(255, 201, 148, 0.8);
+    }
+    .next-button:after {
+      content: ' →'; /* Right arrow */
+    }
+    label {
+      font-size: 1em;
+      display: block;
+      margin: 10px 0;
+      text-align: left;
+    }
+    label input {
+      margin-right: 10px;
+    }
+    .answered-count {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    .back-button, .next-button {
+      background-color: rgba(181, 120, 71, 0.8);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.2em;
+    }
+    .back-button:hover, .next-button:hover {
+      background-color: rgba(184, 152, 84, 0.8);
+    }
+    .next-button:after {
+      content: ' →'; /* Right arrow */
+    }
+    label {
+      font-size: 1em;
+      display: block;
+      margin: 10px 0;
+      text-align: left;
+    }
+    label input {
+      margin-right: 10px;
+    }
+    .answered-count {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>แบบทดสอบ</h1>
+    <div id="answeredCount" class="answered-count">
+      คำถามที่ทำไปแล้ว: 0/2
+    </div>
+    <form id="quizForm">
+      <!-- Question 1 -->
+      <div class="question">
+        <p>1. ข้อใดคือความหมายของการคลาด?</p>
+        <label><input type="radio" name="q1" value="A" onchange="updateAnsweredCount()">A. </label>
+        <label><input type="radio" name="q1" value="B" onchange="updateAnsweredCount()">B. </label>
+        <label><input type="radio" name="q1" value="C" onchange="updateAnsweredCount()">C. </label>
+        <label><input type="radio" name="q1" value="D" onchange="updateAnsweredCount()">D. </label>
+      </div>
+      <!-- Question 2 -->
+      <div class="question">
+        <p>2. ข้อใดคือตลาดธุรกิจ</p>
+        <label><input type="radio" name="q2" value="A" onchange="updateAnsweredCount()">A. </label>
+        <label><input type="radio" name="q2" value="B" onchange="updateAnsweredCount()">B. </label>
+        <label><input type="radio" name="q2" value="C" onchange="updateAnsweredCount()">C. </label>
+        <label><input type="radio" name="q2" value="D" onchange="updateAnsweredCount()">D. </label>
+      </div>
+      <!-- Add remaining questions -->
+      <div class="button-container">
+        <button type="button" class="submit-button" onclick="submitQuiz()">ส่งคำตอบ</button>
+        <button type="button" class="back-button" onclick="backQuiz()">กลับหน้าหลัก</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let answeredCount = 0;
+    const totalQuestions = 2;  // จำนวนคำถามทั้งหมด
+
+    // ฟังก์ชันอัปเดตจำนวนคำถามที่ตอบแล้ว
+    function updateAnsweredCount() {
+      answeredCount = 0;
+      
+      // ตรวจสอบทุกคำถามและนับจำนวนคำถามที่ติ๊ก
+      for (let i = 1; i <= totalQuestions; i++) {
+        // ตรวจสอบทุก input ที่มีชื่อเป็น q1, q2, ..., q20
+        const answers = document.querySelectorAll(`input[name="q${i}"]:checked`);
+        if (answers.length > 0) {
+          answeredCount++; // ถ้ามีการติ๊กคำตอบ ก็จะเพิ่มจำนวนคำถามที่ตอบแล้ว
+        }
+      }
+
+      // อัปเดตข้อความแสดงจำนวนคำถามที่ทำไปแล้ว
+      document.getElementById('answeredCount').textContent = `คำถามที่ทำไปแล้ว: ${answeredCount}/${totalQuestions}`;
+    }
+
+    function submitQuiz() {
+      let allAnswered = true;
+      
+      // ตรวจสอบว่าทุกคำถามมีการตอบแล้วหรือไม่
+      for (let i = 1; i <= totalQuestions; i++) {
+        const answer = document.querySelector(`input[name="q${i}"]:checked`);
+        if (!answer) {
+          allAnswered = false;
+          break; 
+        }
+      }
+  
+      if (!allAnswered) {
+        alert("กรุณาตอบทุกคำถามก่อนส่งคำตอบ");
+        return;
+      }
+  
+      const correctAnswers = {
+        q1: 'C', // ตัวอย่างคำตอบที่ถูกต้อง
+        q2: 'A',
+        // เพิ่มคำตอบที่ถูกต้องสำหรับคำถามอื่นๆ
+      };
+  
+      let score = 0;
+      let userAnswers = {};
+      for (let q in correctAnswers) {
+        const answer = document.querySelector(`input[name="${q}"]:checked`);
+        if (answer) {
+          userAnswers[q] = answer.value;
+          if (answer.value === correctAnswers[q]) {
+            score++;
+          }
+        }
+      }
+  
+      // เก็บคะแนนและคำตอบลงใน localStorage
+      localStorage.setItem('score', score);
+      localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+      localStorage.setItem('correctAnswers', JSON.stringify(correctAnswers));
+  
+      window.location.href = 'resultmaketing.html'; // เปลี่ยนเป็นหน้าผลลัพธ์ของคุณ
+    }
+  </script>
+</body>
+</html>
